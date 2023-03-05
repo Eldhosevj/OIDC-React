@@ -30,7 +30,7 @@ import Register from "../components/auth/register"
 //  };
   export const router = createBrowserRouter([
     {
-      path: "/signin-oidc",
+      path: "/authentication/callback",
       element: <Callback />,
     },
     {
