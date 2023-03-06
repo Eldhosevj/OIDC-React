@@ -30,7 +30,7 @@ import Register from "../components/auth/register"
 //  };
   export const router = createBrowserRouter([
     {
-      path: "/authentication/callback",
+      path: "/signin-oidc",
       element: <Callback />,
     },
     {
@@ -50,7 +50,7 @@ import Register from "../components/auth/register"
         element: <SilentRenew />,
       },
       {
-        path: "/dashboard",
+        path: "/en/dashboard",
         element: <PrivatePage />,
       },
       {

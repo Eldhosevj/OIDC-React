@@ -1,17 +1,20 @@
-import { IDENTITY_CONFIG, METADATA_OIDC } from "./authConst";
-import { UserManager, WebStorageStateStore, Log } from "oidc-client";
+import { IDENTITY_CONFIG_DEMO, METADATA_OIDC,KEY_DEMO,KEY_VERRA_MOBILITY } from "./authConst";
+import { UserManager, WebStorageStateStore, Log,OidcClient } from "oidc-client";
+import Oidc from 'oidc-client'
+const IDENITY_SERVER_POINTS_TO="DEMO"
+//const IDENITY_SERVER_POINTS_TO="VERRA"
 
+const IDENTITY_SERVER_CONFIGARATION=IDENITY_SERVER_POINTS_TO=="DEMO"?IDENTITY_CONFIG_DEMO:null
+const KEY=IDENITY_SERVER_POINTS_TO=="DEMO"?KEY_DEMO:KEY_VERRA_MOBILITY
 export default class AuthService {
     UserManager;
 
     constructor() {
-        this.UserManager = new UserManager({
-            ...IDENTITY_CONFIG,
-            userStore: new WebStorageStateStore({ store: window.sessionStorage }),
-            metadata: {
-                ...METADATA_OIDC
-            }
-        });
+        this.UserManager = new UserManager(
+           {...IDENTITY_SERVER_CONFIGARATION,userStore: new WebStorageStateStore({ store: window.sessionStorage })}
+           
+        );
+        this.client = new Oidc.OidcClient(IDENTITY_SERVER_CONFIGARATION);
         // Logger
         Log.logger = console;
         Log.level = Log.DEBUG;
@@ -32,7 +35,14 @@ export default class AuthService {
 
     signinRedirectCallback = () => {
         this.UserManager.signinRedirectCallback().then(() => {
-            "";
+alert("login successful")
+const USER=this.getUser()
+USER.then((res)=>{
+    alert(JSON.stringify(res.profile
+        ))
+})
+        }).catch((err)=>{
+            alert(err)
         });
     };
 
@@ -83,7 +93,16 @@ export default class AuthService {
     };
 
     createSigninRequest = () => {
-        return this.UserManager.createSigninRequest();
+       // return this.UserManager.createSigninRequest();
+    
+       
+       this.client.createSigninRequest(KEY).then(function(req) {
+        console.debug("login request", req, "<a href='" + req.url + "'>login</a>");
+        window.location = req.url;
+    }).catch(function(err) {
+        console.debug(err);
+    });
+
     };
 
     logout = () => {
@@ -101,3 +120,4 @@ export default class AuthService {
         this.UserManager.clearStaleState();
     };
 }
+

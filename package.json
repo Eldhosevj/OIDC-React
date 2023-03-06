@@ -11,6 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.3.4",
     "http-proxy-middleware": "^2.0.6",
+    "mkcert": "^1.5.1",
     "oidc-client": "^1.11.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -19,7 +20,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set port=59984 && react-scripts start",
+ "start": "set PORT=9000 && react-scripts start",
     "server": "json-server --watch db.json --port 59984 --middlewares ./range.cjs",
     "build": "react-scripts build",
     "test": "react-scripts test",
